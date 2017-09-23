@@ -531,11 +531,12 @@ class TelegramBot extends EventEmitter {
         }
       };
       TelegramBot.messageTypes.forEach(processMessageType);
-      if (message.text) {
+      if (message.caption || message.text) {
         debug('Text message');
         this._textRegexpCallbacks.some(reg => {
-          debug('Matching %s with %s', message.text, reg.regexp);
-          const result = reg.regexp.exec(message.text);
+          const value = message.caption || message.text;
+          debug('Matching %s with %s', value, reg.regexp);
+          const result = reg.regexp.exec(value);
           if (!result) {
             return false;
           }
